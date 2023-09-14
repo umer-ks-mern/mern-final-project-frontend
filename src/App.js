@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { layoutRouter } from "./router/Layout";
+import { nonLayoutRouter } from "./router/NonLayout";
+import Layout from "./layout";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <ToastContainer />
+      <Routes>
+        {nonLayoutRouter.map((ele) => (
+          <Route path={ele.path} element={ele.element} />
+        ))}
+        <Route path="*" element={<h1>404</h1>} />
+
+        <Route element={<Layout />}>
+          {layoutRouter.map((ele) => (
+            <Route path={ele.path} element={ele.element} />
+          ))}
+        </Route>
+      </Routes>
+    </>
   );
-}
+};
 
 export default App;
