@@ -1,3 +1,6 @@
-export const nonLayoutRouter = [
-  { path: "non-layout-route", element: <h1>NonLayout</h1> },
+import CustomerIndex from "../modules/customer/pages/CustomerIndex";
+
+export const LayoutRouter = [
+  { path: "layout-route", element: <h1>Layout</h1> },
+  {path:"/", element:<CustomerIndex/>}
 ];
