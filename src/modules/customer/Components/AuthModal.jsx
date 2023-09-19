@@ -7,6 +7,10 @@ import Cookies from "js-cookie";
 import { isExpired, decodeToken } from "react-jwt";
 import { useNavigate } from "react-router-dom";
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -65,13 +69,22 @@ export default function AuthModal({ isSignin, onAuthentication }) {
         handleClose();
         const decodedToken = decodeToken(response.data.token);
         const Tokenexpired = isExpired(response.data.token);
+        
 
-        if (decodedToken.role !== 'Admin' && !Tokenexpired) {
+        try {
+          
+          toast.success(isSignin ? "Registration Successful" : "Login Successful");
+          
+        } catch (error) {
+          toast.error(error); 
+        }
+
+        if (decodedToken.role !== 'admin' ) {
           onAuthentication(true);
           navigation("/customer");
         }else{
           onAuthentication(true);
-          navigation('/Admin')
+          navigation('/admin')
         }
       }
     } catch (error) {
@@ -84,7 +97,7 @@ export default function AuthModal({ isSignin, onAuthentication }) {
       <button
         className={`${renderContent(
           "bg-blue-400 text-white",
-          ""
+          "bg-purple-400 text-white"
         )} border p-1 px-4 rounded mr-3`}
         onClick={handleOpen}
       >
