@@ -1,95 +1,56 @@
-import axios from 'axios';
-import React from 'react';
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import AuthModal from './AuthModal';
+import Cookies from "js-cookie";
 
 const Navbar = () => {
+  const [authenticated, setAuthenticated] = useState(!!Cookies.get('token'))
+
   const handleAuth = (action) => {
     if (action === "signin") {
       // Handle Signin Logic
       console.log("Signin clicked");
     } else if (action === "signup") {
       // Handle Signup Logic
-      console.log("Signup clicked");
+      console.log("Signup clicked")
     } else if (action === "logout") {
       // Handle Logout Logic
-      console.log("Logout clicked");
+      console.log("Logout clicked")
+      Cookies.remove('token')
+      setAuthenticated(false)
     }
-  };
-
-  const accessToken = localStorage.getItem("token") || '';
+  }
 
   return (
-    <nav style={{ background: "#333", padding: "10px 20px", display: "flex", width: "100%", justifyContent: "space-between", alignItems: "center" }}>
-      <Link to="/" style={{ fontWeight: "bold", color: "#fff", fontSize: "24px", textDecoration: "none" }}>
+    <nav className="bg-gray-800 p-5 flex justify-between items-center">
+      <Link to="/" className="text-white font-bold text-2xl">
         Ecommerce Store
       </Link>
-      <div style={{ display: 'flex', alignItems: "center" }}>
-        <input
-          style={{
-            padding: "5px 10px",
-            border: "none",
-            borderRadius: "5px",
-            marginRight: "10px",
-          }}
-          type="text"
-          placeholder="Search"
-        />
-        <button
-          style={{
-            padding: "5px 10px",
-            background: "lightblue",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            color: "#333",
-          }}
-        >
-          Search
-        </button>
-        <div style={{ marginLeft: "10px" }}>
-          {accessToken ? (
+      <div className="flex items-center">
+        <div className="flex flex-col items-center mr-5">
+          <input
+            className="p-2 border rounded mb-2 w-full max-w-md"
+            type="text"
+            placeholder="Search"
+          />
+          <button
+            className="p-2 bg-blue-300 rounded w-full max-w-md text-gray-800"
+          >
+            Search
+          </button>
+        </div>
+        <div className="flex">
+          {authenticated ? (
             <button
-              style={{
-                padding: "5px 10px",
-                background: "#e74c3c",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-                color: "#fff",
-              }}
+              className="p-2 rounded text-white bg-red-500"
               onClick={() => handleAuth("logout")}
             >
               Logout
             </button>
           ) : (
             <>
-              <button
-                style={{
-                  padding: "5px 10px",
-                  background: "#3498db",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                  color: "#fff",
-                }}
-                onClick={() => handleAuth("signin")}
-              >
-                Signin
-              </button>
-              <button
-                style={{
-                  marginLeft: "10px",
-                  padding: "5px 10px",
-                  background: "#2ecc71",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                  color: "#fff",
-                }}
-                onClick={() => handleAuth("signup")}
-              >
-                Signup
-              </button>
+              <AuthModal isSignin={false} onAuthentication={setAuthenticated} />
+              <AuthModal isSignin={true} onAuthentication={setAuthenticated} />
             </>
           )}
         </div>
