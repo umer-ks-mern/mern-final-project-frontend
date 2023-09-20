@@ -4,6 +4,9 @@ import Navbar from '../../../Common/Navbar/Navbar';
 import axios from 'axios';
 import ProductCard from '../Components/ProductCard';
 
+
+
+
 const CustomerIndex = () => {
   const location = useLocation();
   const searchQuery = new URLSearchParams(location.search).get('q');
@@ -39,6 +42,9 @@ const CustomerIndex = () => {
             {data.map((product, index) => (
               <div key={index} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 px-2 mb-4">
                 <ProductCard
+                key={index}
+
+                  id={product._id}
                   name={product.name}
                   category={product.category}
                   price={product.price}

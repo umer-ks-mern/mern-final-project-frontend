@@ -27,9 +27,9 @@ export default function AuthModal({ isSignin, onAuthentication }) {
     email: "",
     password: "",
     name: "",
-    address: "", // Additional fields for signup
-    phone: "",   // Additional fields for signup
-    role: "customer", // Default role is "customer"
+    address: "", 
+    phone: "",  
+    role: "customer", 
   });
 
   const [open, setOpen] = useState(false);
@@ -80,7 +80,7 @@ export default function AuthModal({ isSignin, onAuthentication }) {
 
         if (decodedToken.role !== 'admin' ) {
           onAuthentication(true);
-          navigation("/customer");
+          navigation("/");
         }else{
           onAuthentication(true);
           navigation('/admin')

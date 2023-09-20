@@ -1,25 +1,38 @@
 import React from 'react';
 import { toast } from 'react-toastify';
+import Cookies from "js-cookie";
+import { isExpired, decodeToken } from "react-jwt";
 
-const ProductCard = ({ name, category, price, quantity, description }) => {
-  const addToCart = () => {
-    const existingCartData = JSON.parse(localStorage.getItem('cart')) || [];
+
+const ProductCard = ({id, name, category, price, quantity, description }) => {
+  const token=Cookies.get('token') || ''
+  let user = ''
+  console.log(token);
+  if(token){user = decodeToken(token).user || ''
+  }
   
-    const productIndex = existingCartData.findIndex((item) => item.name === name);
+  const addToCart = () => {
+    if(token){
+    const existingCartData = JSON.parse(localStorage.getItem(`${user._id}_cart`)) || [];
+  
+    const productIndex = existingCartData.findIndex((item) => item.id === id);
   
     if (productIndex !== -1) {
       existingCartData[productIndex].quantity += 1;
     } else {
      
-      existingCartData.push({ name, price, quantity: 1 });
+      existingCartData.push({id, name, price, quantity: 1 });
     }
   
     // Store the updated cart data in local storage
-    localStorage.setItem('cart', JSON.stringify(existingCartData));
+    localStorage.setItem(`${user._id}_cart`, JSON.stringify(existingCartData));
     toast.success('Product Added to cart')
+  }else{
+    toast.error('Please login to add product to cart')
+  }
   };
   
-
+  
   return (
     <div className="border rounded-lg shadow-md bg-white overflow-hidden">
       {/* Product Image Skeleton Loader */}

@@ -13,9 +13,10 @@ const Navbar = () => {
      if (action === "logout") {
      
       console.log("Logout clicked")
+      navigate("/")
       Cookies.remove('token')
       setAuthenticated(false)
-      navigate("/")
+      
     }
   }
 
