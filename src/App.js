@@ -1,22 +1,12 @@
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { layoutRouter } from "./router/Layout";
 import { nonLayoutRouter } from "./router/NonLayout";
+import {LayoutRouter} from './router/Layout'
 import Layout from "./layout";
-import Cart from "./modules/cart/components/Cart";
-import CartView from "./modules/cart/pages/view";
-
-const cart = [
-  {
-    _id: "6505633a5e1f00aab106609b",
-    quantity: 2,
-  },
-  {
-    _id: "650563645e1f00aab106609d",
-    quantity: 3,
-  },
-];
+import { sellerRoutes } from "./modules/seller/routes";
+import "react-toastify/dist/ReactToastify.css";
+import AdminLayout from "./layout/adminLayout";
 
 const App = () => {
   useEffect(() => {
@@ -27,13 +17,18 @@ const App = () => {
       {/* <ToastContainer />
       <Routes>
         {nonLayoutRouter.map((ele) => (
-          <Route path={ele.path} element={ele.element} />
+          <Route  path={ele.path} element={ele.element} />
         ))}
         <Route path="*" element={<h1>404</h1>} />
 
         <Route element={<Layout />}>
-          {layoutRouter.map((ele) => (
-            <Route path={ele.path} element={ele.element} />
+          {LayoutRouter.map((ele) => (
+            <Route  path={ele.path} element={ele.element} />
+          ))}
+        </Route>
+        <Route path="/admin" element={<AdminLayout />}>
+          {sellerRoutes.map((ele) => (
+            <Route  path={ele.path} element={ele.element} />
           ))}
         </Route>
       </Routes> */}
