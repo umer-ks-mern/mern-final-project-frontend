@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Navbar from '../../../Common/Navbar/Navbar';
 import axios from 'axios';
 import ProductCard from '../Components/ProductCard';
 
 const CustomerIndex = () => {
+  const location = useLocation();
+  const searchQuery = new URLSearchParams(location.search).get('q');
   const [data, setData] = useState([]);
+  console.log(searchQuery)
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [searchQuery]); // Re-fetch data when the searchQuery changes
 
   async function fetchData() {
     try {
-      const response = await axios.get('http://localhost:3300/products');
+      let endpoint = 'http://localhost:3300/products';
+      if (searchQuery) {
+        // If a search query is present, append it to the endpoint
+        endpoint += `?q=${searchQuery}`;
+      }
+      const response = await axios.get(endpoint);
       setData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error.message);

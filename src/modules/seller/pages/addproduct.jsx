@@ -2,8 +2,15 @@ import React from "react";
 import * as Yup from "yup";
 import { FormikProvider, useFormik, Field } from "formik";
 import axios from "axios";
+import Cookies from "js-cookie";
+import {  decodeToken } from "react-jwt";
+
+
 
 const AddProduct = () => {
+  const token=Cookies.get('token')
+  const {role}=decodeToken(token)
+
   const productSchema = Yup.object({
     name: Yup.string()
       .required("This field is required")
@@ -35,7 +42,13 @@ const AddProduct = () => {
     validationSchema: productSchema,
     onSubmit: (values, { resetForm }) => {
       console.log(values);
-      axios.post("http://localhost:3300/product/create", values);
+      const headers={
+       
+        "Authorization":`Bearer ${token}`,
+        "user-role":role
+
+      }
+      axios.post("http://localhost:3300/product/create", values,{headers});
       resetForm();
     },
   });
