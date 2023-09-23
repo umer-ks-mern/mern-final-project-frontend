@@ -8,12 +8,14 @@ const ProductCard = ({id, name, category, price, quantity, description }) => {
   const token=Cookies.get('token') || ''
   let user = ''
   console.log(token);
-  if(token){user = decodeToken(token).user || ''
+  if (token) {
+    user = decodeToken(token)
+    console.log(user);
   }
   
   const addToCart = () => {
     if(token){
-    const existingCartData = JSON.parse(localStorage.getItem(`${user._id}_cart`)) || [];
+    const existingCartData = JSON.parse(localStorage.getItem(`${user.id}_cart`)) || [];
   
     const productIndex = existingCartData.findIndex((item) => item.id === id);
   
@@ -25,7 +27,7 @@ const ProductCard = ({id, name, category, price, quantity, description }) => {
     }
   
     // Store the updated cart data in local storage
-    localStorage.setItem(`${user._id}_cart`, JSON.stringify(existingCartData));
+    localStorage.setItem(`${user.id}_cart`, JSON.stringify(existingCartData));
     toast.success('Product Added to cart')
   }else{
     toast.error('Please login to add product to cart')

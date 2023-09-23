@@ -72,7 +72,9 @@ export default function AuthModal({ isSignin, onAuthentication }) {
 
         try {
           
-          toast.success(isSignin ? "Registration Successful" : "Login Successful");
+          toast.success(
+            isSignin ? "Login Successful" : "Registration Successful"
+          );
           
         } catch (error) {
           toast.error(error); 

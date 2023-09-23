@@ -4,9 +4,6 @@ import Navbar from '../../../Common/Navbar/Navbar';
 import axios from 'axios';
 import ProductCard from '../Components/ProductCard';
 
-
-
-
 const CustomerIndex = () => {
   const location = useLocation();
   const searchQuery = new URLSearchParams(location.search).get('q');

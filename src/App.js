@@ -2,38 +2,50 @@ import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { nonLayoutRouter } from "./router/NonLayout";
-import {LayoutRouter} from './router/Layout'
+import { LayoutRouter } from "./router/Layout";
 import Layout from "./layout";
 import { sellerRoutes } from "./modules/seller/routes";
 import "react-toastify/dist/ReactToastify.css";
 import AdminLayout from "./layout/adminLayout";
 
+const cart = [
+  {
+    _id: "6505633a5e1f00aab106609b",
+    quantity: 5,
+  },
+  {
+    _id: "650563645e1f00aab106609d",
+    quantity: 5,
+  },
+  {
+    _id: "650863f741637fd6dadfe673",
+    quantity: 5,
+  },
+];
+
 const App = () => {
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, []);
+  // Store the updated cart data in local storage
+  localStorage.setItem(`cart`, JSON.stringify(cart));
   return (
     <>
-      {/* <ToastContainer />
+      <ToastContainer />
       <Routes>
-        {nonLayoutRouter.map((ele) => (
-          <Route  path={ele.path} element={ele.element} />
+        {nonLayoutRouter.map((ele, index) => (
+          <Route key={index} path={ele.path} element={ele.element} />
         ))}
         <Route path="*" element={<h1>404</h1>} />
 
         <Route element={<Layout />}>
-          {LayoutRouter.map((ele) => (
-            <Route  path={ele.path} element={ele.element} />
+          {LayoutRouter.map((ele, index) => (
+            <Route key={index} path={ele.path} element={ele.element} />
           ))}
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
-          {sellerRoutes.map((ele) => (
-            <Route  path={ele.path} element={ele.element} />
+          {sellerRoutes.map((ele, index) => (
+            <Route key={index} path={ele.path} element={ele.element} />
           ))}
         </Route>
-      </Routes> */}
-
-      <CartView />
+      </Routes>
     </>
   );
 };
