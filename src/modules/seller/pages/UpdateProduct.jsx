@@ -1,108 +1,102 @@
-import React, { useState,useEffect } from "react";
+import React from "react";
 import * as Yup from "yup";
-import { FormikProvider, useFormik, Field } from "formik";
+import DynamicForm from '../../../layout/Form.layout'
+import Cookies from "js-cookie";
+import { decodeToken } from "react-jwt";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
 
-const UpdateProduct = ({id}) => {
-  const productSchema = Yup.object({
-    name: Yup.string().required("This field is required").min(3).max(30),
-    price: Yup.string().required("This field is required").min(1),
-    quantity: Yup.string().required("This field is required").min(0),
-    category: Yup.string().required("This field is required").min(3).max(100),
-    description: Yup.string().required("This field is required").max(1000),
-  });
-
-const[prevValues,setPrevValues]=useState({
-    name:"",
-    price:"",
-    category:"",
-    quantity:"",
-    description:""
-})
-
-  useEffect(() => {
-    axios.get(`http://localhost:3300/product/${id}`)
-    .then((response) => {
-
-      setPrevValues(response.data) ;
-    })
-    .catch((error) => {
-      console.error('Error fetching product data:', error);
-    });
-}, [id]);
-
-  const formik = useFormik({
-    initialValues: {
-      name: prevValues.name,
-      price: prevValues.price,
-      category: prevValues.category,
-      quantity: prevValues.quantity,
-      description: prevValues.description,
+const UpdateProduct = () => {
+    const { product_id } = useParams()
+    const navigation=useNavigate()
+  
+  const fields = [
+    {
+      name: "name",
+      label: "Name",
+      type: "text",
+      validation: Yup.string()
+        .required("This field is required")
+        .min(3)
+        .max(30),
     },
-   
-    validationSchema: productSchema,
-    onSubmit: (values) => {
-      
-    axios.put(`http://localhost:3300/products/${id}`, values)
+    {
+      name: "category",
+      label: "Category",
+      type: "text",
+      validation: Yup.string()
+        .required("This field is required")
+        .min(3)
+        .max(100),
+    },
+    {
+      name: "price",
+      label: "Price",
+      type: "number",
+      validation: Yup.number()
+        .required("This field is required")
+        .min(1),
+    },
+    {
+      name: "quantity",
+      label: "Quantity",
+      type: "number",
+      validation: Yup.number()
+        .required("This field is required")
+        .min(0),
+    },
+    {
+      name: "description",
+      label: "Description",
+      type: "textarea",
+      validation: Yup.string()
+        .required("This field is required")
+        .max(1000),
+    },
+  ];
+  const token = Cookies.get("token");
+  const { role } = decodeToken(token);
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "user-role": role,
+  };
+  // Define the onSubmit function for this form
+  const handleSubmit = async (values) => {
+    try {
+      // Handle form submission here, e.g., make an API request
+      axios.put(`http://localhost:3300/product/${product_id}`, values,{headers})
     .then((response) => {
+
         toast.success("Product updated successfully!")
+        navigation("/admin/viewproducts")
+        
+        
     })
     .catch((error) => {
-      toast.error('Error updating product:', error)
+      console.log(error)
     });
-     },
-  });
-
-
-
-
+    
+    } catch (error) {
+      // Handle errors, e.g., show a toast message
+      console.error("Form submission error:", error);
+    }
+  };
 
   return (
-    <FormikProvider value={formik}>
-      <form className="cf" id="my_form">
-        <div className="half left cf">
-          <Field type="text" id="name" placeholder="Name" name="name" />
-          <Field
-            type="text"
-            id="category"
-            placeholder="Category"
-            name="category"
-          />
-          <Field
-            type="text"
-            id="input-subject"
-            placeholder="Price"
-            name="price"
-          />
-          {formik.touched.name && formik.errors.name && (
-            <h6>{formik.errors.name}</h6>
-          )}
-          <Field
-            type="text"
-            id="input-subject"
-            placeholder="Quantity"
-            name="quantity"
-          />
-          {formik.touched.quantity && formik.errors.quantity && (
-            <h6>{formik.errors.quantity}</h6>
-          )}
-        </div>
-        <div className="half right cf">
-          <Field
-            name="description"
-            type="text"
-            id="input-message"
-            placeholder="Description"
-          />
-          {formik.touched.description && formik.errors.description && (
-            <h6>{formik.errors.description}</h6>
-          )}
-        </div>
-        <button onClick={formik.handleSubmit}>Add Product</button>
-      </form>
-    </FormikProvider>
+    <div>
+      <h1>Add Product</h1>
+      <DynamicForm
+        fields={fields}
+        onSubmit={handleSubmit}
+        initialValues={{}}
+      />
+    </div>
   );
 };
 
 export default UpdateProduct;
+
+
+
+

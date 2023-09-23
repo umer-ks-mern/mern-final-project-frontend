@@ -1,8 +1,9 @@
 import Upload from "./pages/Upload";
 import AddProduct from "./pages/addproduct";
 import UpdateProduct from "./pages/updateProduct";
-import ViewProduct from "./pages/viewproduct";
-import ViewUser from "./pages/viewuser";
+import ViewUser from "./pages/ViewUser";
+import ViewOrders from "./pages/viewOrders.jsx";
+import ViewProducts from "./pages/viewProducts";
 
 export const sellerRoutes = [
   {
@@ -10,19 +11,26 @@ export const sellerRoutes = [
     element: <AddProduct />,
   },
   {
-    path: "/admin/updateproduct",
+    path: "/admin/updateproduct/:product_id",
     element: <UpdateProduct />,
   },
   {
-    path: "/admin/viewUser",
+    path: "/admin/viewUsers",
     element: <ViewUser />,
   },
   {
-    path: "/admin/viewProduct",
-    element: <ViewProduct/>,
+    path: "/admin/viewProducts",
+    element: <ViewProducts/>,
   },
   {
     path:"/admin/upload",
-    element:<Upload/>
+    element:<Upload/>,
+    
+   
+  },
+
+  {
+    path:"/admin/viewOrders",
+    element:<ViewOrders/>
   }
 ];

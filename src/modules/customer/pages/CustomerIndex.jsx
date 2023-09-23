@@ -11,6 +11,7 @@ const CustomerIndex = () => {
   const location = useLocation();
   const searchQuery = new URLSearchParams(location.search).get('q');
   const [data, setData] = useState([]);
+ 
 
   useEffect(() => {
     fetchData();

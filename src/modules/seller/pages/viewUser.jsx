@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useEffect,usestate } from 'react';
 import axios from 'axios';
 
 const ViewUser=()=>{
 
-    const [users,setUsers]=useState([]);
+    const [users,setUsers]=usestate('');
  useEffect(()=>{
     axios.get("https://localhost:3300/users").then((res)=>{
-        setUsers(res?.data)
+        setUsers(res.data)
     }).catch((err)=>{
-        console.log(err)
+        {<h5>Error found</h5>}
     })
  },[])
 
