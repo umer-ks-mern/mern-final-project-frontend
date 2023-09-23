@@ -7,8 +7,6 @@ import Layout from "./layout";
 import { sellerRoutes } from "./modules/seller/routes";
 
 import AdminLayout from "./layout/adminLayout";
-import 'react-toastify/dist/ReactToastify.css';
-
 
 const App = () => {
   return (

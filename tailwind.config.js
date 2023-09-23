@@ -2,8 +2,7 @@ const config = {
   content: [
     './**/*.jsx', // Include all .jsx files in your project
   ],
-  
-    theme: {
+  theme: {
     extend: {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

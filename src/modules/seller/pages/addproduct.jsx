@@ -3,15 +3,13 @@ import * as Yup from "yup";
 import { FormikProvider, useFormik, Field } from "formik";
 import axios from "axios";
 import Cookies from "js-cookie";
-import {  decodeToken } from "react-jwt";
+import { decodeToken } from "react-jwt";
 import { toast } from "react-toastify";
 import Upload from "./Upload";
 
-
-
 const AddProduct = () => {
-  const token=Cookies.get('token')
-  const {role}=decodeToken(token)
+  const token = Cookies.get("token");
+  const { role } = decodeToken(token);
 
   const productSchema = Yup.object({
     name: Yup.string()
@@ -43,17 +41,18 @@ const AddProduct = () => {
     },
     validationSchema: productSchema,
     onSubmit: (values, { resetForm }) => {
-      const headers={
-       
-        "Authorization":`Bearer ${token}`,
-        "user-role":role
-
-      }
-      axios.post("http://localhost:3300/product/create", values,{headers}).then(res=>{
-        toast.success("Product added Successfully")
-      }).catch(e=>{
-        toast.error(e.response.statusText)
-      })
+      const headers = {
+        Authorization: `Bearer ${token}`,
+        "user-role": role,
+      };
+      axios
+        .post("http://localhost:3300/product/create", values, { headers })
+        .then((res) => {
+          toast.success("Product added Successfully");
+        })
+        .catch((e) => {
+          toast.error(e.response.statusText);
+        });
       resetForm();
     },
   });
@@ -152,7 +151,7 @@ const AddProduct = () => {
             <p className="text-red-500">{formik.errors.quantity}</p>
           )}
         </div>
-        <Upload/>
+        <Upload />
         <div className="w-full p-4">
           <button
             onClick={formik.handleSubmit}
