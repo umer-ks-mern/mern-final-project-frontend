@@ -6,8 +6,8 @@ import axios from "axios";
 const UpdateProduct = () => {
   const productSchema = Yup.object({
     name: Yup.string().required("This field is required").min(3).max(30),
-    price: Yup.string().required("This field is required").min(1),
-    quantity: Yup.string().required("This field is required").min(0),
+    price: Yup.number().required("This field is required").min(1),
+    quantity: Yup.number().required("This field is required").min(0),
     category: Yup.string().required("This field is required").min(3).max(100),
     description: Yup.string().required("This field is required").max(1000),
   });
@@ -74,7 +74,7 @@ const UpdateProduct = () => {
             Price
           </label>
           <Field
-            type="text"
+            type="number"
             id="price"
             name="price"
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
@@ -89,7 +89,7 @@ const UpdateProduct = () => {
             Quantity
           </label>
           <Field
-            type="text"
+            type="number"
             id="quantity"
             name="quantity"
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
