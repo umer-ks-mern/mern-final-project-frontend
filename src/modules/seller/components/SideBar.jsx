@@ -14,7 +14,7 @@ const SideBar = () => {
     <CDBSidebar
       textColor="white"
       className="bg-gray-800 text-white"
-      fixed
+      sticky
     >
       <CDBSidebarHeader prefix={<i className="fa fa-bars" />}>
         <div className="text-xl font-semibold">Admin Dashboard</div>

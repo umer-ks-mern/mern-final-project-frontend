@@ -11,17 +11,16 @@ const CustomerIndex = () => {
   const location = useLocation();
   const searchQuery = new URLSearchParams(location.search).get('q');
   const [data, setData] = useState([]);
-  console.log(searchQuery)
+ 
 
   useEffect(() => {
     fetchData();
-  }, [searchQuery]); // Re-fetch data when the searchQuery changes
+  },[data] ); 
 
   async function fetchData() {
     try {
       let endpoint = 'http://localhost:3300/products';
       if (searchQuery) {
-        // If a search query is present, append it to the endpoint
         endpoint += `?q=${searchQuery}`;
       }
       const response = await axios.get(endpoint);

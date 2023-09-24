@@ -5,10 +5,10 @@ import { nonLayoutRouter } from "./router/NonLayout";
 import {LayoutRouter} from './router/Layout'
 import Layout from "./layout";
 import { sellerRoutes } from "./modules/seller/routes";
-import "react-toastify/dist/ReactToastify.css";
-
 
 import AdminLayout from "./layout/adminLayout";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const App = () => {
   return (

@@ -15,6 +15,7 @@ const Search = ({ onSearch }) => {
       try {
         const response = await axios.get(`http://localhost:3300/products?q=${query}`);
         setSearchResults(response.data);
+        
         setIsLoading(false);
 
         if (typeof onSearch === 'function') {
