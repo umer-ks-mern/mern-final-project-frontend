@@ -22,9 +22,11 @@ const ViewUser=()=>{
 
     return (
         <>
+        <h1>Update User</h1>
       <DynamicTable data={users} columns={columns} rowsPerPageOptions={[5,10,15]} defaultRowsPerPage={5}/>
         </>
     )
 };
+
 
 export default ViewUser;
