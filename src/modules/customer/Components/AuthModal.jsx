@@ -1,14 +1,13 @@
 import React, { useState } from "react";
+import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { isExpired, decodeToken } from "react-jwt";
+import { decodeToken } from "react-jwt";
 import { useNavigate } from "react-router-dom";
-
 import { toast } from "react-toastify";
-
+import DynamicForm from "../../../layout/Form.layout";
 
 const style = {
   position: "absolute",
@@ -22,40 +21,29 @@ const style = {
   p: 4,
 };
 
-export default function AuthModal({ isSignin, onAuthentication }) {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    name: "",
-    address: "", 
-    phone: "",  
-    role: "customer", 
-  });
+const initialFormData = {
+  email: "",
+  password: "",
+  name: "",
+  address: "",
+  phone: "",
+  role: "customer",
+};
 
+export default function AuthModal({ isSignin, onAuthentication }) {
+  const [formData, setFormData] = useState(initialFormData);
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   const navigation = useNavigate();
 
-  const renderContent = (signInContent, signUpContent) => {
-    return isSignin ? signInContent : signUpContent;
-  };
+  const isSignup = !isSignin;
+  const actionText = isSignin ? "Sign In" : "Sign Up";
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (values) => {
     const endpoint = isSignin ? "/user/login" : "/user/register";
 
     try {
       const response = await axios.post(`http://localhost:3300${endpoint}`, {
-        ...formData,
+        ...values,
       });
 
       if (
@@ -63,8 +51,6 @@ export default function AuthModal({ isSignin, onAuthentication }) {
         (response.status === 200 || response.status === 201)
       ) {
         Cookies.set("token", response.data.token);
-        const headers = { 'Authorization': 'Bearer ' + response.data.token };
-
         handleClose();
         const decodedToken = decodeToken(response.data.token);
         const Tokenexpired = isExpired(response.data.token);
@@ -89,20 +75,42 @@ export default function AuthModal({ isSignin, onAuthentication }) {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
+  };
+
+  const fields = [
+    { name: "email", label: "Email", type: "email" },
+    { name: "password", label: "Password", type: "password" },
+    ...(isSignup
+      ? [
+          { name: "name", label: "Name", type: "text" },
+          { name: "address", label: "Address", type: "text" },
+          { name: "phone", label: "Phone", type: "text" },
+          {
+            name: "role",
+            label: "Role",
+            type: "select",
+            options: ["customer", "admin"],
+          },
+        ]
+      : []),
+  ];
+
+  const handleClose = () => {
+    setOpen(false);
+    setFormData(initialFormData);
   };
 
   return (
     <div>
       <button
-        className={`${renderContent(
-          "bg-blue-400 text-white",
-          "bg-purple-400 text-white"
-        )} border p-1 px-4 rounded mr-3`}
-        onClick={handleOpen}
+        className={`${
+          isSignin ? "bg-blue-400" : "bg-purple-400"
+        } text-white border p-1 px-4 rounded mr-3`}
+        onClick={() => setOpen(true)}
       >
-        {renderContent("Sign In", "Sign Up")}
+        {actionText}
       </button>
       <Modal
         open={open}
@@ -112,97 +120,13 @@ export default function AuthModal({ isSignin, onAuthentication }) {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {renderContent("Sign In", "Sign Up")}
+            {actionText}
           </Typography>
-          <form onSubmit={handleSubmit}>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              {renderContent(
-                "Welcome back! Please sign in.",
-                "Join us by creating an account."
-              )}
-            </Typography>
-            {!isSignin && (
-              <>
-                <div className="mt-4">
-                  <label htmlFor="name">Name</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    className="w-full p-2 border rounded mt-1"
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="mt-4">
-                  <label htmlFor="address">Address</label>
-                  <input
-                    type="text"
-                    id="address"
-                    name="address"
-                    className="w-full p-2 border rounded mt-1"
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="mt-4">
-                  <label htmlFor="phone">Phone</label>
-                  <input
-                    type="text"
-                    id="phone"
-                    name="phone"
-                    className="w-full p-2 border rounded mt-1"
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="mt-4">
-                  <label htmlFor="role">Role</label>
-                  <select
-                    id="role"
-                    name="role"
-                    className="w-full p-2 border rounded mt-1"
-                    onChange={handleChange}
-                    required
-                    value={formData.role}
-                  >
-                    <option value="customer">Customer</option>
-                    <option value="admin">Admin</option>
-                  </select>
-                </div>
-              </>
-            )}
-            <div className="mt-4">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className="w-full p-2 border rounded mt-1"
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mt-4">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="w-full p-2 border rounded mt-1"
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mt-4">
-              <button
-                type="submit"
-                className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow-lg transition duration-300"
-              >
-                {renderContent("Sign In", "Sign Up")}
-              </button>
-            </div>
-          </form>
+          <DynamicForm
+            fields={fields}
+            initialValues={formData}
+            onSubmit={handleSubmit}
+          />
         </Box>
       </Modal>
     </div>
