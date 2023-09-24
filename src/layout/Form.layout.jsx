@@ -11,6 +11,8 @@ const DynamicForm = ({ fields, onSubmit, initialValues }) => {
     }, {})
   );
 
+
+
   const fieldComponents = {
     text: (field) => (
       <Field

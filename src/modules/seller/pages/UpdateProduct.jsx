@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as Yup from "yup";
-import DynamicForm from '../../../layout/Form.layout'
+import DynamicForm from "../../../layout/Form.layout";
 import Cookies from "js-cookie";
 import { decodeToken } from "react-jwt";
 import axios from "axios";
@@ -8,9 +8,26 @@ import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 
 const UpdateProduct = () => {
-    const { product_id } = useParams()
-    const navigation=useNavigate()
-  
+  const { product_id } = useParams();
+  const navigation = useNavigate();
+  const [prev, setPrev] = useState({
+    name:"",
+    description:"",
+    quantity:"",
+    price:"",
+    category:""
+  });
+  useEffect(() => {
+    axios.get(
+      `http://localhost:3300/product/${product_id}`
+        .then((res) => {
+          setPrev(res.data);
+        })
+        .catch((err) => {
+          toast.error("request failed", err);
+        })
+    );
+  }, []);
   const fields = [
     {
       name: "name",
@@ -34,25 +51,19 @@ const UpdateProduct = () => {
       name: "price",
       label: "Price",
       type: "number",
-      validation: Yup.number()
-        .required("This field is required")
-        .min(1),
+      validation: Yup.number().required("This field is required").min(1),
     },
     {
       name: "quantity",
       label: "Quantity",
       type: "number",
-      validation: Yup.number()
-        .required("This field is required")
-        .min(0),
+      validation: Yup.number().required("This field is required").min(0),
     },
     {
       name: "description",
       label: "Description",
       type: "textarea",
-      validation: Yup.string()
-        .required("This field is required")
-        .max(1000),
+      validation: Yup.string().required("This field is required").max(1000),
     },
   ];
   const token = Cookies.get("token");
@@ -65,18 +76,15 @@ const UpdateProduct = () => {
   const handleSubmit = async (values) => {
     try {
       // Handle form submission here, e.g., make an API request
-      axios.put(`http://localhost:3300/product/${product_id}`, values,{headers})
-    .then((response) => {
-
-        toast.success("Product updated successfully!")
-        navigation("/admin/viewproducts")
-        
-        
-    })
-    .catch((error) => {
-      console.log(error)
-    });
-    
+      axios
+        .put(`http://localhost:3300/product/${product_id}`, values, { headers })
+        .then((response) => {
+          toast.success("Product updated successfully!");
+          navigation("/admin/viewproducts");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } catch (error) {
       // Handle errors, e.g., show a toast message
       console.error("Form submission error:", error);
@@ -86,17 +94,9 @@ const UpdateProduct = () => {
   return (
     <div>
       <h1>Add Product</h1>
-      <DynamicForm
-        fields={fields}
-        onSubmit={handleSubmit}
-        initialValues={{}}
-      />
+      <DynamicForm fields={fields} onSubmit={handleSubmit} initialValues={{prev}} />
     </div>
   );
 };
 
 export default UpdateProduct;
-
-
-
-
