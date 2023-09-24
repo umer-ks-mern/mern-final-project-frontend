@@ -8,24 +8,7 @@ import { sellerRoutes } from "./modules/seller/routes";
 import "react-toastify/dist/ReactToastify.css";
 import AdminLayout from "./layout/adminLayout";
 
-const cart = [
-  {
-    _id: "6505633a5e1f00aab106609b",
-    quantity: 5,
-  },
-  {
-    _id: "650563645e1f00aab106609d",
-    quantity: 5,
-  },
-  {
-    _id: "650863f741637fd6dadfe673",
-    quantity: 5,
-  },
-];
-
 const App = () => {
-  // Store the updated cart data in local storage
-  localStorage.setItem(`cart`, JSON.stringify(cart));
   return (
     <>
       <ToastContainer />
