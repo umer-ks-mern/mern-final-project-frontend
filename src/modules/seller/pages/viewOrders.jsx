@@ -5,7 +5,7 @@ const ViewOrders=()=>{
 
 const [orders,setOrders]=useState();
 useEffect(()=>{
-axios.get("http://localhost:3300/checkout").then((res)=>{
+axios.get("http://localhost:3300/bills").then((res)=>{
     setOrders(res.data)
 }).catch((err)=>{
     toast.error("Request Failed!")
