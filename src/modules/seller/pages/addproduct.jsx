@@ -9,17 +9,17 @@ import {  decodeToken } from "react-jwt";
 
 const AddProduct = () => {
   const token=Cookies.get('token')
-  const {role}=decodeToken(token)
+  const {role}=ecodeToken(token)
 
   const productSchema = Yup.object({
     name: Yup.string()
       .required("This field is required")
       .min(3)
       .max(30),
-    price: Yup.string()
+    price: Yup.number()
       .required("This field is required")
       .min(1),
-    quantity: Yup.string()
+    quantity: Yup.number()
       .required("This field is required")
       .min(0),
     category: Yup.string()
@@ -100,7 +100,7 @@ const AddProduct = () => {
             Price
           </label>
           <Field
-            type="text"
+            type="number"
             id="price"
             name="price"
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
@@ -137,7 +137,7 @@ const AddProduct = () => {
             Quantity
           </label>
           <Field
-            type="text"
+            type="number"
             id="quantity"
             name="quantity"
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"

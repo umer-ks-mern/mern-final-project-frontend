@@ -17,20 +17,21 @@ const SideBar = () => {
       fixed
     >
       <CDBSidebarHeader prefix={<i className="fa fa-bars" />}>
-        <div className="text-xl font-semibold">Contrast</div>
+        <div className="text-xl font-semibold">Admin Dashboard</div>
       </CDBSidebarHeader>
       <CDBSidebarContent className="text-gray-200">
         <CDBSidebarMenu>
-          <CDBSidebarMenuItem icon="th-large" className="hover:bg-gray-700" onClick={()=>navigate("/admin/addproduct")}>
+          <CDBSidebarMenuItem icon="th-large" className="hover:bg-gray-700" onClick={()=>navigate("/admin/viewProducts")}>
             Products
           </CDBSidebarMenuItem>
-          <CDBSidebarMenuItem icon="sticky-note" className="hover:bg-gray-700">
+          <CDBSidebarMenuItem icon="sticky-note" className="hover:bg-gray-700" onClick={()=>navigate("/admin/viewOrders")}>
             Orders
           </CDBSidebarMenuItem>
           <CDBSidebarMenuItem
             icon="credit-card"
             iconType="solid"
             className="hover:bg-gray-700"
+            onClick={()=>navigate("/admin/viewUsers")}
           >
             Users
           </CDBSidebarMenuItem>
