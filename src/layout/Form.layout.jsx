@@ -26,6 +26,19 @@ const DynamicForm = ({ fields, onSubmit, initialValues }) => {
         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
       />
     ),
+    select: (field) => (
+      <Field
+        as="select"
+        name={field.name}
+        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
+      >
+        {field.options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </Field>
+    ),
     textarea: (field) => (
       <Field
         as="textarea"
@@ -33,7 +46,22 @@ const DynamicForm = ({ fields, onSubmit, initialValues }) => {
         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
       />
     ),
+    password: (field) => (
+      <Field
+        type="password"
+        name={field.name}
+        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
+      />
+    ),
+    email: (field) => (
+      <Field
+        type="email"
+        name={field.name}
+        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
+      />
+    ),
   };
+  
 
   return (
     <Formik
