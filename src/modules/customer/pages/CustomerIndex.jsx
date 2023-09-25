@@ -12,7 +12,7 @@ const CustomerIndex = () => {
 
   useEffect(() => {
     fetchData();
-  },[data] ); 
+  }, [searchQuery]); 
 
   async function fetchData() {
     try {

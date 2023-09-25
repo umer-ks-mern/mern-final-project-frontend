@@ -33,14 +33,14 @@ const CartView = () => {
       {cart.map((cartItem, index) => (
         <Cart key={index} _id={cartItem.id} quantity={cartItem.quantity} />
       ))}
-      <div className="container justify-between flex flex-row fixed border rounded-md shadow-md items-center">
+      <div className="fixed bottom-0 left-0 w-full bg-white py-2 px-10 border-t border-gray-300 shadow-md flex justify-between items-center">
         <button
-          className="m-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
           onClick={() => navigate("/checkout")}
         >
           Checkout
         </button>{" "}
-        <h6>Total: {total}</h6>
+        <h6 className="text-lg font-semibold">Total: {total}</h6>
       </div>
     </div>
   );

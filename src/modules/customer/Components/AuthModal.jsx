@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { decodeToken } from "react-jwt";
+import { decodeToken, isExpired } from "react-jwt";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import DynamicForm from "../../../layout/Form.layout";
@@ -54,24 +54,21 @@ export default function AuthModal({ isSignin, onAuthentication }) {
         handleClose();
         const decodedToken = decodeToken(response.data.token);
         const Tokenexpired = isExpired(response.data.token);
-        
 
         try {
-          
           toast.success(
             isSignin ? "Login Successful" : "Registration Successful"
           );
-          
         } catch (error) {
-          toast.error(error); 
+          toast.error(error);
         }
 
-        if (decodedToken.role !== 'admin' ) {
+        if (decodedToken.role !== "admin") {
           onAuthentication(true);
           navigation("/");
-        }else{
+        } else {
           onAuthentication(true);
-          navigation('/admin')
+          navigation("/admin");
         }
       }
     } catch (error) {
